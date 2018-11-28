@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qixin.dao.stuDao">
+<select id="getMajor" parameterType="int" resultType="com.qixin.entity.Major">
+select * from t_major where cid=#{cid}
+</select>
+
+<select id="getMajorone" parameterType="int" resultType="com.qixin.entity.Major">
+select * from t_major where mid=#{mid}
+</select>
+<insert id="inserClass" parameterType="com.qixin.entity.ClassPO">
+insert into t_class (name,start_time,end_time,mid,deleid) VALUES(#{name},#{start_time},#{end_time},#{mid},'0')
+</insert>
+
+<!-- <select id="seleClassList"  resultType="com.qixin.entity.ClassListPO">
+select
+cs.class_id , cs.`name` classname , cs.start_time ,cs.end_time , cs.deleid ,
+mr.`name` majorname , ce.`name` collegename
+ from 
+t_class cs ,t_college ce ,  t_major mr 
+ where  ce.cid=mr.cid and mr.mid=cs.mid
+</select> -->
+
+<select id="seleclasscount"  resultType="int">
+select count(*) from t_class 
+</select>
+
+
+<select id="seleclassmap" parameterType="map"  resultType="com.qixin.entity.ClassListPO">
+select
+cs.class_id , cs.`name` classname , cs.start_time ,cs.end_time , cs.deleid ,
+mr.`name` majorname , ce.`name` collegename
+ from 
+	(SELECT * FROM t_class limit #{index},#{pageSize})cs ,t_college ce ,  t_major mr 
+ where  ce.cid=mr.cid and mr.mid=cs.mid
+</select>
+
+<update id="updaClassName" parameterType="com.qixin.entity.updaClassNamePO">
+update t_class set 
+name = #{name}
+where class_id = #{class_id}
+</update>
+
+<update id="updadeleid" parameterType="int">
+update t_class set 
+deleid = '1'
+where class_id = #{class_id}
+</update>
+<select id="getClass" parameterType="int" resultType="com.qixin.entity.ClassPO">
+select * from t_class where mid=#{mid}
+</select>
+<select id="getClassone" parameterType="int" resultType="com.qixin.entity.ClassPO">
+select * from t_class where class_id=#{class_id}
+</select>
+
+<select id="getClasstrue" parameterType="int" resultType="com.qixin.entity.ClassPO">
+select * from t_class where class_id=#{class_id}
+</select>
+
+<insert id="inserStudent" parameterType="com.qixin.entity.insertStudent">
+insert into t_student
+<trim suffixOverrides="," suffix=")" prefix="(">
+<if test="name!=null and name!=''">name, </if>
+<if test="sex!=null  and sex!=''">sex, </if>
+<if test="age!=null and age!=''">age,</if>
+<if test="birthday!=null  and birthday!=''">birthday, </if>
+<if test="cardid!=null and cardid!=''">cardid,</if>
+<if test="tel!=null and tel!=''">tel,</if>
+<if test="education!=null and education!=''">education,</if>
+parent_name01,
+parent_tel01,
+<if test="parent_name02!=null and parent_name02!=''">parent_name02,</if>
+<if test="parent_tel02!=null and parent_tel02!=''">parent_tel02, </if>
+<if test="school_system!=null and school_system!='' ">school_system,</if>
+<if test="enrolment_time!=null  and enrolment_time!=''">enrolment_time,</if>
+<if test="student_class!=null and student_class!=''">student_class,</if>
+integrated_integral,
+student_status,
+<if test="cid!=null and cid!=''">cid,</if>
+<if test="mid!=null and mid!=''">mid,</if>
+<if test="class_id!=null and class_id!=''">class_id,</if>
+score,
+<if test="xhid!=null and xhid!=''">xhid</if>
+</trim>
+<trim suffixOverrides="," suffix=")" prefix="values (">
+<if test="name!=null and name!=''">#{name},</if>
+<if test="sex!=null  and sex!=''">#{sex},</if>
+<if test="age!=null and age!=''">#{age},</if>
+<if test="birthday!=null  and birthday!=''">#{birthday},</if>
+<if test="cardid!=null and cardid!=''">#{cardid},</if>
+<if test="tel!=null and tel!=''">#{tel},</if>
+<if test="education!=null and education!=''">#{education},</if>
+#{parent_name01},
+#{parent_tel01},
+<if test="parent_name02!=null and parent_name02!=''">#{parent_name02},</if>
+<if test="parent_tel02!=null and parent_tel02!=''">#{parent_tel02}, </if>
+<if test="school_system!=null and school_system!='' ">#{school_system},</if>
+<if test="enrolment_time!=null  and enrolment_time!=''">#{enrolment_time},</if>
+<if test="student_class!=null and student_class!=''">#{student_class},</if>
+100,
+'在读',
+<if test="cid!=null and cid!=''">#{cid},</if>
+<if test="mid!=null and mid!=''">#{mid},</if>
+<if test="class_id!=null and class_id!=''">#{class_id},</if>
+'优秀',
+<if test="xhid!=null and xhid!=''">#{xhid}</if>
+
+
+
+
+
+</trim>
+
+
+</insert>
+
+
+<!-- <select id="seleClassStudent" parameterType="int" resultType="com.qixin.entity.insertStudent">
+select * from t_student where class_id=#{class_id}
+</select> -->
+
+<!-- <select id="selestu" resultType="com.qixin.entity.insertStudent">
+select * from t_student 
+</select> -->
+
+<select id="selestucount" resultType="int">
+select count(*) from t_student 
+</select>
+
+
+<select id="selestufeny" parameterType="map" resultType="com.qixin.entity.insertStudent">
+select * from t_student limit #{index},#{pageSize}
+</select>
+
+<select id="selestufeny1" parameterType="com.qixin.entity.MOhu" resultType="com.qixin.entity.insertStudent">
+select * from t_student where name like '%${muhu}%'  limit #{index},#{pageSize} 
+<!-- select * from t_student where name like '%test00%' limit 0,10  -->
+
+</select>
+
+<select id="seleclasscountclass" resultType="int" parameterType="int">
+select count(*) from t_student where class_id=#{class_id}
+</select>
+
+ <select id="selestufenyeClass" parameterType="map" resultType="com.qixin.entity.insertStudent">
+select * from t_student where class_id=#{class_id} limit #{index},#{pageSize} 
+</select> 
+
+<select id="huixstu" parameterType="int" resultType="com.qixin.entity.insertStudent">
+select * from t_student where sid=#{sid}
+</select>
+
+
+
+<update id="updastudent"  parameterType="com.qixin.entity.updaStu">
+<!-- update t_student set 
+name=#{name},sex=#{sex},age=#{age},birthday=#{birthday},cardid=#{cardid},
+tel=#{tel},education=#{education},
+parent_tel01=#{parent_tel01},
+parent_tel02=#{parent_tel02},parent_name02=#{parent_name02},
+school_system=#{school_system},
+student_class=#{student_class},
+student_status=#{student_status},mid=#{mid},cid=#{cid},class_id=#{class_id} -->
+update t_student set 
+<trim suffixOverrides="," >
+<if test="name!=null and name!=''">name=#{name}, </if>
+<if test="sex!=null and sex!=''">sex=#{sex}, </if>
+<if test="age!=null and age!=''">age=#{age},</if>
+<if test="birthday!=null  and birthday!=''">birthday=#{birthday}, </if>
+<if test="cardid!=null and cardid!=''">cardid=#{cardid},</if>
+<if test="tel!=null and tel!=''">tel=#{tel},</if>
+<if test="education!=null and education!=''">education=#{education},</if>
+
+<if test="parent_tel01!=null and parent_tel01!=''">parent_tel01=#{parent_tel01},</if>
+
+<if test="parent_name02!=null and parent_name02!=''">parent_name02=#{parent_name02},</if>
+<if test="parent_tel02!=null and parent_tel02!=''">parent_tel02=#{parent_tel02},</if>
+<if test="school_system!=null and school_system!='' ">school_system=#{school_system},</if>
+<if test="student_class!=null  and student_class!=''">student_class=#{student_class},</if>
+<if test="student_status!=null and student_status!=''">student_status=#{student_status},</if>
+<if test="mid!=null and mid!=''">mid=#{mid},</if>
+<if test="cid!=null and cid!=''">cid=#{cid},</if>
+<if test="class_id!=null and class_id!=''">class_id=#{class_id}</if>
+</trim>
+where sid = #{sid}
+</update>
+
+<delete id="deleclass" parameterType="int">
+delete from t_class where class_id=#{class_id}
+</delete>
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+

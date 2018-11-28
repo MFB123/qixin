@@ -1,0 +1,34 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>学院选择</title>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.8.2.js"></script>
+
+<script type="text/javascript">
+$(function(){
+	var url="<%=request.getContextPath() %>/getCollege.do";
+	$.post(url,function(result){
+	
+	console.log(result)
+
+	for(var i=0;i<result.length;i++){
+		$("#coll").append("<input type='radio' name='cid' value='"+result[i].cid+"' />"+result[i].name);
+		
+		}
+	
+		},'json')
+})
+</script>
+
+
+</head>
+<body>
+<form action="tomajor.do" method="post">
+<span id="coll"></span><br>
+<input type="submit" value="确认选择"/>
+</form>
+</body>
+</html>
